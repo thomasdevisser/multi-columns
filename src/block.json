@@ -25,6 +25,10 @@
       "source": "html",
       "selector": "p"
     },
+    "columnCount": {
+      "type": "integer",
+      "default": 4
+    },
     "style": {
       "type": "object",
       "default": {
