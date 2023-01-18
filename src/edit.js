@@ -17,6 +17,7 @@ import {
 	InspectorControls,
 } from "@wordpress/block-editor";
 import { PanelBody, RangeControl } from "@wordpress/components";
+import NumberControl from "./components/number-control";
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -43,21 +44,42 @@ export default function Edit({ attributes, setAttributes }) {
 		setAttributes({ columnCount: val });
 	};
 
-	const { columnCount } = attributes;
-	const columnStyles = { columnCount };
+	const onChangeColumnWidth = (val) => {
+		setAttributes({ columnWidth: Number(val) });
+	};
 
-	console.log(attributes);
+	const onChangeColumnGap = (val) => {
+		setAttributes({ columnGap: Number(val) });
+	};
+
+	const { columnCount, columnWidth, columnGap } = attributes;
+	const columnStyles = { columnCount, columnWidth, columnGap };
 
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody>
+				<PanelBody title="Column Settings">
 					<RangeControl
 						label="Columns"
 						value={columnCount}
 						onChange={onChangeColumnCount}
 						min={2}
 						max={6}
+					/>
+					<NumberControl
+						label="Column width"
+						value={columnWidth}
+						onChange={onChangeColumnWidth}
+						min={120}
+						max={500}
+						step={10}
+					/>
+					<NumberControl
+						label="Gap"
+						value={columnGap}
+						onChange={onChangeColumnGap}
+						min={10}
+						max={100}
 					/>
 				</PanelBody>
 			</InspectorControls>
