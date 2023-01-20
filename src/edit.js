@@ -13,7 +13,7 @@ import { __ } from "@wordpress/i18n";
  */
 import {
 	useBlockProps,
-	RichText,
+	InnerBlocks,
 	InspectorControls,
 	PanelColorSettings,
 } from "@wordpress/block-editor";
@@ -37,10 +37,6 @@ import "./editor.scss";
  * @return {WPElement} Element to render.
  */
 export default function Edit({ attributes, setAttributes }) {
-	const onChangeContent = (val) => {
-		setAttributes({ content: val });
-	};
-
 	const onChangeColumnCount = (val) => {
 		setAttributes({ columnCount: val });
 	};
@@ -81,20 +77,31 @@ export default function Edit({ attributes, setAttributes }) {
 		columnRuleWidth,
 		columnRuleColor,
 	};
+	const ALLOWED_BLOCKS = ["core/heading", "core/paragraph", "core/image"];
+	const TEMPLATE_PARAGRAPHS = [
+		"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin finibus, lectus non interdum cursus, arcu sapien mollis lacus, et tincidunt odio nisi ut purus. Duis eleifend, magna placerat faucibus tincidunt, orci nulla ornare tortor, eget egestas tortor nunc quis sem. Cras in tortor justo. Nulla consectetur leo vel blandit consectetur. Fusce quis sapien ante. Vestibulum non varius augue, et ultricies urna. Integer hendrerit suscipit nibh.",
+		"Interdum et malesuada fames ac ante ipsum primis in faucibus. Cras vestibulum mauris diam. Praesent semper diam a efficitur iaculis. Nullam lacinia augue quis lorem accumsan tempus. Maecenas dapibus velit eu blandit pretium. Nullam posuere ut ipsum in commodo. Fusce fringilla quis turpis a placerat. Etiam hendrerit velit a lacus varius ornare.",
+	];
+	const MC_TEMPLATE = [
+		["core/heading", { level: 2, placeholder: "Heading..." }],
+		["core/paragraph", { placeholder: TEMPLATE_PARAGRAPHS[0] }],
+		["core/heading", { level: 4, placeholder: "Sub-heading..." }],
+		["core/paragraph", { placeholder: TEMPLATE_PARAGRAPHS[1] }],
+	];
 
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title="Column Settings">
+				<PanelBody title={__("Column Settings", "multi-columns")}>
 					<RangeControl
-						label="Columns"
+						label={__("Columns", "multi-columns")}
 						value={columnCount}
 						onChange={onChangeColumnCount}
 						min={2}
 						max={6}
 					/>
 					<NumberControl
-						label="Column width"
+						label={__("Column Width", "multi-columns")}
 						value={columnWidth}
 						onChange={onChangeColumnWidth}
 						min={120}
@@ -102,16 +109,19 @@ export default function Edit({ attributes, setAttributes }) {
 						step={10}
 					/>
 					<NumberControl
-						label="Gap"
+						label={__("Gap", "multi-columns")}
 						value={columnGap}
 						onChange={onChangeColumnGap}
 						min={10}
 						max={100}
 					/>
 				</PanelBody>
-				<PanelBody title="Column Separator" initialOpen={false}>
+				<PanelBody
+					title={__("Column Separator", "multi-columns")}
+					initialOpen={false}
+				>
 					<SelectControl
-						label="Separator Style"
+						label={__("Separator Style", "multi-columns")}
 						onChange={onChangeColumnRuleStyle}
 						value={columnRuleStyle}
 						options={[
@@ -146,7 +156,7 @@ export default function Edit({ attributes, setAttributes }) {
 						]}
 					/>
 					<NumberControl
-						label="Width"
+						label={__("Width", "multi-columns")}
 						onChange={onChangeColumnRuleWidth}
 						value={columnRuleWidth}
 						min={1}
@@ -154,23 +164,19 @@ export default function Edit({ attributes, setAttributes }) {
 					/>
 				</PanelBody>
 				<PanelColorSettings
-					title="Color Settings"
+					title={__("Color Settings", "multi-columns")}
 					colorSettings={[
 						{
-							label: "Separator Color",
+							label: __("Separator Color", "multi-columns"),
 							value: columnRuleColor,
 							onChange: onChangeColumnRuleColor,
 						},
 					]}
 				></PanelColorSettings>
 			</InspectorControls>
-			<RichText
-				{...useBlockProps({ style: columnStyles })}
-				tagName="p"
-				onChange={onChangeContent}
-				value={attributes.content}
-				placeholder="Enter some text here..."
-			/>
+			<div {...useBlockProps({ style: columnStyles })}>
+				<InnerBlocks allowedBlocks={ALLOWED_BLOCKS} template={MC_TEMPLATE} />
+			</div>
 		</>
 	);
 }
