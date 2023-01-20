@@ -23,6 +23,8 @@ export default function save({ attributes }) {
 		columnRuleStyle,
 		columnRuleWidth,
 		columnRuleColor,
+		dropCapColor,
+		dropCapSize,
 	} = attributes;
 	const columnStyles = {
 		columnCount,
@@ -31,6 +33,9 @@ export default function save({ attributes }) {
 		columnRuleStyle,
 		columnRuleWidth,
 		columnRuleColor,
+		"--drop-cap-color": dropCapColor,
+		"--drop-cap-font-size": dropCapSize.fontSize,
+		"--drop-cap-line-height": dropCapSize.lineHeight,
 	};
 
 	return (
