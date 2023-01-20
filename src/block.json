@@ -20,6 +20,18 @@
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
   "attributes": {
+    "columnRuleColor": {
+      "type": "string",
+      "default": "#b8b8b8"
+    },
+    "columnRuleWidth": {
+      "type": "integer",
+      "default": 1
+    },
+    "columnRuleStyle": {
+      "type": "string",
+      "default": "solid"
+    },
     "content": {
       "type": "string",
       "source": "html",
